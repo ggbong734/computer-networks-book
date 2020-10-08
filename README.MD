@@ -108,42 +108,120 @@ IP provides for a one-byte “Time to Live” (TTL) field in the IP header; decr
 
 A switch is responsible only for the next hop to the ultimate destination; if a switch has a complete path in mind, there is no guarantee that the next_hop switch or any other downstream switch will continue to forward along that path.
 
-(Page 20). 
+### 1.7 Congestion
+
+Congestion
+> Switches introduce the possibility of congestion: packets arriving faster than they can be sent out.
+
+Causes of congestion
+- if the inbound interface has a higher bandwidth than the outbound interface
+- traffic arriving on multiple inputs and all destined for the same output
+
+A queue will form if packets arrive faster than they can be sent. If queue is full, packets will be **dropped**. 
+
+### 1.8 Packets again
+
+The main benefit of packets: The same link can carry, at different times, different packets representing traffic to different destinations and from different senders.
+
+When a router or switch receives a packet, it reads in the entire packet before looking at the header and decide which node to forward it. THis is known as **Store and forward** and introduces a **forwarding delay** equal to time needed to read the entire packet. 
+
+Total packet delay is the sum of: bandwidth delay (per link), propagation delay (speed of light), store-and-forward delay, queueing delay. 
+
+### 1.9 LAN and Ethernet
+
+Local Area Network
+> physical links that are ultimately serial lines. common interfacing hardward connecting the hosts to the links. protocols to make everything work together.
+
+The most common type of (wired) LAN is Ethernet, nowadays most Ethernet operates at 100 Mbps.
+
+Due to both privacy and efficiency concerns, almost all Ethernets today are fully switched; this ensures that each packet is delivered only to the host to which it is addressed.
+
+Ethernet also has a designated broadcast address. A host sending to the broadcast address has its packet received by every other host on the network; broadcast mechanism allows host A to contact host B when A does not yet know B’s physical address. 
+
+Traffic addressed to a particular host – that is, not broadcast – is said to be unicast.
+
+Switched Ethernet works quite well, however, for networks with up to 10,000-100,000 nodes. Forwarding tables (list of all node addresses) with size in that range are straightforward to manage.
+
+### IP - Internet Protocol
+
+To solve the scaling problem with Ethernet, the Internet Protocol was developed. IP was meant to support universal connectivity, without resulting in unmanageably large forwarding tables (currently the largest tables have 300,000 entries).
+
+IP provides a global mechanism for **addressing and routing**, so that packets can actually be delivered from any host to any other host. IP addresses are part of the IP header. 
+
+An essential feature of IP addresses is that they can be divided into a network part (prefix) and a host part (the remainder.)
+
+IP addresses need to be assigned by administrative group. 
+
+The network portion of an IP address is sometimes called the network number or network address or network prefix. As we shall see below, most forwarding decisions are made using only the network prefix.
+
+All hosts with the same network address (same network bits) are said to be on the same IP network and must be located together on the same LAN; Thus we assume that if two hosts share the same network address they can reach each other directly.
+
+IP is a best effort system; there are no IP-layer acknowledgments or retransmissions. We ship the packet and hope it gets there. best-effort model represents what is known as connectionless networking: the IP layer does not maintain information about endpoint-to-endpoint connections, and simply forwards packets like a giant LAN.
+
+The alternative could have been some form connection-oriented internetworking, in which routers do maintain state information about individual connections.
+
+Connectionless networking is conceptually more reliable: if routers do not hold connection state, then they cannot lose connection state. The primary advantage of connection-oriented networking, on the other hand, is that the routers are then much better positioned to accept reservations and to make quality-of-service guarantees. This is somewhat neglected in current internet. Packets are treated by the Internet just the same as any other file. No priority service option.
+
+The most common form of IP packet loss is router queue overflows, representing network congestion. A large number of hosts can simultaneously attempt to send traffic through one router. 
+
+### 1.10.1 IP Forwarding
+
+The “destination” values listed in the forwarding tables of IP routers are network prefixes – representing entire LANs – instead of individual hosts. The goal of IP forwarding, then, becomes delivery to the correct LAN; A separate process is used to deliver to the final hosts once the final LAN is reached.
+
+**Routers need to list only the network prefixes** of the destination addresses in their IP forwarding tables. This strategy is the key to IP scalability: it saves large amounts of forwarding-table space, it saves time as smaller tables allow faster lookup, and it saves the bandwidth and overhead that would be needed for routers to keep track of individual addresses.
+
+
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 26). 
+
+(Page 25). 
+
+(Page 25). 
+
+
+(Page 25). 
+
+(Page 25). 
+
+(Page 24). 
+
+(Page 24). 
+
+(Page 24). 
+(Page 23). 
+
+(Page 23). 
+
+
+
+(Page 23). 
+
+
+(Page 23). 
+
+(Page 23). 
+
+(Page 23). 
+
+(Page 22). 
+
+(Page 22). 
+
+(Page 21). 
 
 (Page 20). 
 
-(Page 19). 
-(Page 19). 
-
-(Page 19). 
-
-(Page 19). 
-
-(Page 19). 
-
-
-
-(Page 19). 
-
-(Page 19). 
-
-(Page 19). 
-
-(Page 19). 
-
-(Page 18). 
-
-
-(Page 18). 
-
-(Page 17). 
-
-(Page 17). 
-
-
-(Page 17). 
-
-(Page 17). 
-
-
-
+(Page 20). 
+(Page 20). 
