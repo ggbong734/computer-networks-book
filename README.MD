@@ -170,7 +170,61 @@ The “destination” values listed in the forwarding tables of IP routers are n
 
 **Routers need to list only the network prefixes** of the destination addresses in their IP forwarding tables. This strategy is the key to IP scalability: it saves large amounts of forwarding-table space, it saves time as smaller tables allow faster lookup, and it saves the bandwidth and overhead that would be needed for routers to keep track of individual addresses.
 
+Suppose A is the sending host, sending a packet to a destination host D. The first step is for A to determine whether D is on the same LAN as itself or not, that is whether D is local. If D is in the same LAN network, it sends the packet via LAN. 
 
+If, D is not in the same local network as A, then A looks up a router to use. Most ordinary hosts only use one router for all non-local packet deliveries, making this choice simple. The router first checks to see if any of its network interfaces are on the same LAN as D; recall that the router connects to at least one additional network besides the one for A. If the answer is yes, then the router uses direct LAN delivery to the destination, as above. If, on the other hand, Dnet is not a LAN to which the router is connected directly, then the router consults its internal forwarding table.
+This consists of a list of networks each with an associated next_hop address.
+
+The next_hop addresses in the table are chosen so that the router can always reach them via direct LAN delivery via one of its interfaces; generally they are other routers.
+
+The packet continues being forwarded like this, from router to router, until it finally arrives at a router that is connected to D's network; it is then delivered by that final router directly to D, using the LAN.
+
+<p align="center"><img src="images/1.10.1_IP_forwarding.png"></p>
+
+**One can think of the network-prefix bits as analogous to the “zip code” on postal mail, and the host bits as analogous to the street address. The internal parts of the post office get a letter to the right zip code, and then an individual letter carrier (the LAN) gets it to the right address.**
+
+The Internet backbone as those IP routers that specialize in large-scale routing on the commercial Internet, and which generally have forwarding-table entries covering all public IP addresses; while there are many private IP networks, there are about 800,000 separate network prefixes (as of 2019) visible to the backbone.
+
+If a destination does not match any locally assigned network prefix, the packet needs to be routed out into the Internet at large; for typical non-backbone sites this almost always this means the packet is sent to the ISP that provides Internet connectivity.
+
+**The Internet can be seen as a combination of end-user LANs together with point-to-point links joining these LANs to the backbone**
+
+### 1.10.2 Future of IPv4
+
+THe Internet Assigned Numbers Authority (IANA) of North America (ARIN) ran out of its pool of IPv4 addresses. This may accelerate implementation of IPv6 which has 128-bit addresses instead of the 32-bit (i.e. 32 zeroes and ones) of IPv4
+
+### 1.11 DNS Domain Name System
+
+IP addresses are hard to remember (nearly impossible in IPv6). The domain name system, or DNS (10.1 DNS), comes to the rescue by creating a way to convert hierarchical text names to IP addresses. Thus, for example, one can type www.luc.edu instead of 147.126.1.230.
+
+All Internet software uses the same basic library calls to convert DNS names to IP addresses. 
+
+
+
+(Page 30). 
+
+(Page 29). 
+
+(Page 28). 
+
+(Page 28). 
+
+(Page 28). 
+
+(Page 28). 
+
+
+
+(Page 27). 
+
+(Page 27). 
+
+(Page 27). 
+(Page 27). 
+
+(Page 27). 
+
+(Page 27). 
 
 (Page 26). 
 
