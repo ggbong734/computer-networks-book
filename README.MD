@@ -243,127 +243,17 @@ All that is needed to create a CDN is a multiplicity of datacenters, each with i
 
 Finding the edge server that is closest to a given user is a tricky issue. There are three techniques in common use. In the first, the edge servers are all given different IP addresses, and DNS is configured to have users receive the IP address of the closest edge server. In the second, each edge server has the same IP address, and anycast routing is used to route traffic from the user to the closest edge server. Finally, for HTTP applications a centralized server can look up the approximate location of the user, and then redirect the web page to the closest edge server.
 
-(Page 34). 
-(Page 34). 
+### 1.13 Firewalls
 
-(Page 34). 
+One problem with having a program on your machine listening on an open TCP port is that someone may connect and then, using some flaw in the software on your end, do something malicious to your machine.
 
-(Page 34). 
+A firewall is a mechanism to block connections deemed potentially risky, eg those originating from outside the site.
 
-(Page 33). 
+### 1.14 Useful Utilities
 
-(Page 33). 
+Ping is useful to determine if another machine is accessible. e.g. `ping www.google.com` , ` ping 147.123.1.230` 
 
-(Page 33). 
+To find your own IP address you can use `ifconfig` on Linux.
 
-(Page 32). 
-
-(Page 32). 
-
-(Page 32). 
-
-(Page 32). 
-
-(Page 32). 
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 31). 
-
-(Page 30). 
-
-(Page 29). 
-
-(Page 28). 
-
-(Page 28). 
-
-(Page 28). 
-
-(Page 28). 
-
-
-
-(Page 27). 
-
-(Page 27). 
-
-(Page 27). 
-(Page 27). 
-
-(Page 27). 
-
-(Page 27). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 26). 
-
-(Page 25). 
-
-(Page 25). 
-
-
-(Page 25). 
-
-(Page 25). 
-
-(Page 24). 
-
-(Page 24). 
-
-(Page 24). 
-(Page 23). 
-
-(Page 23). 
-
-
-
-(Page 23). 
-
-
-(Page 23). 
-
-(Page 23). 
-
-(Page 23). 
-
-(Page 22). 
-
-(Page 22). 
-
-(Page 21). 
-
-(Page 20). 
-
-(Page 20). 
-(Page 20). 
+`host www.google.com` is used for DNS lookup to check IP addresses.
+`traceroute www.google.com` lists the route from you to a remote host.
