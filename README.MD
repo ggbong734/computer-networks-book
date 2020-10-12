@@ -199,7 +199,95 @@ IP addresses are hard to remember (nearly impossible in IPv6). The domain name s
 
 All Internet software uses the same basic library calls to convert DNS names to IP addresses. 
 
+### 1.12 Transport
 
+Far and away the most popular mechanism in the Transport layer is the Transmission Control Protocol, or TCP. TCP extends IP with the following:
+
+- reliability: TCP numbers each packet, and keeps track of which are lost and retransmits them after a timeout.
+
+- connection-orientation: Once a TCP connection is made, an application sends data simply by writing to that connection.
+
+TCP endpoints are of the form xhost,porty; these pairs are known as socket addresses, Servers (or, more precisely, server applications) listen for connections to sockets they have opened; the client is then any endpoint that initiates a connection to a server.
+
+When you enter a host name in a web browser, it opens a TCP connection to the server’s port 80 (the standard web-traffic port), that is, to the server socket with socket-address (server,80). A busy server may have thousands of connections to its port 80 (the web port) and hundreds of connections to port 25 (the email port). Web and email traffic are kept separate by virtue of the different ports used. All those clients to the same port, though, are kept separate because each comes from a unique (host,port) pair.
+
+That is, there may be multiple independent connections to (www.luc.edu,80). This is somewhat analogous to certain business telephone numbers of the “operators are standing by” type, which support multiple callers at the same time to the same toll-free number. Each call to that number is answered by a different operator (corresponding to a different cpu process), and different calls do not “overhear” each other.
+
+TCP uses the sliding-windows algorithm to keep multiple packets en route at any one time. If the window size is 10 packets, for example, then at any one time 10 packets are in transit (perhaps 5 data packets and 5 returning acknowledgments). As each acknowledgment arrives the window “slides forward” by one packet.
+
+The ideal window size, at least from a throughput perspective, is such that it takes one round-trip time to send an entire window, TCP approximates the ideal size. Window size is slowly raised until packet loss occurs, which TCP takes as a sign that it has reached the limit of available network resources. At that point the window size is reduced to half its previous value, and the slow climb resumes. This maximizes bandwidth while limiting number of packet lost. 
+
+TCP has come to be the Internet protocol charged with reducing (or at least managing) congestion on the Internet, and – relatedly – with ensuring fairness of bandwidth allocations to competing connections.
+
+The real-time performance of TCP is not always consistent: if a packet is lost, the receiving TCP host will not turn over anything further to the receiving application until the lost packet has been retransmitted successfully; this is often called head-of-line blocking.
+
+alternative to TCP is known as UDP, for User Datagram Protocol. UDP omits the other TCP features: there is no connection setup, no lost-packet detection, no automatic timeout/retransmission, the absence of connection setup means data transmission can get started faster, and the absence of lost-packet detection means there is no head-of-line blocking.
+
+
+
+### 1.12.1 Transport Communication Patterns
+
+TCP in streaming video works by buffering the video that has been received but not yet viewed. That way, if there is a dip in throughput due to congestion, the receiver has time to recover. Most streaming-video services estimate available throughput then adapt to it by changing video resolution.
+
+If the video (or, for that matter, voice audio) is interactive, there is much less opportunity for stream buffering. In this case User Datagram Protocol (UDP) is often used to avoid head-of-line blocking (in TCP when packet is lost, the TCP host will not turn over anything until the lost packet has been retransmitted successfully).  
+
+Within the Transport layer, essentially all network connections involve a client and a server. Often this pattern is repeated at the Application layer as well: the client contacts the server and initiates a login session, or browses some web pages, or watches a movie.
+
+### 1.12.2 Content-Distribution Networks
+
+Sites with an extremely large volume of content to distribute often turn to a specialized communication pattern called a content-distribution network (CDN). To reduce the amount of long-distance traffic, or to reduce the round-trip time, a site replicates its content at multiple datacenters (also called Points of Presence (PoPs), nodes, access points or edge servers). When a user makes a request (eg for a web page or a video), the request is routed to the nearest (or approximately nearest) datacenter, and the content is delivered from there.
+
+Large web pages typically contain both static content and also individualized dynamic content. The CDN may cache all or most of the static content at each of its edge servers, leaving the dynamic content to come from a centralized server. Alternatively, the dynamic content may be replicated at each CDN edge node as well. 
+
+All that is needed to create a CDN is a multiplicity of datacenters, each with its own connection to the Internet; private links between datacenters are also common.
+
+Finding the edge server that is closest to a given user is a tricky issue. There are three techniques in common use. In the first, the edge servers are all given different IP addresses, and DNS is configured to have users receive the IP address of the closest edge server. In the second, each edge server has the same IP address, and anycast routing is used to route traffic from the user to the closest edge server. Finally, for HTTP applications a centralized server can look up the approximate location of the user, and then redirect the web page to the closest edge server.
+
+(Page 34). 
+(Page 34). 
+
+(Page 34). 
+
+(Page 34). 
+
+(Page 33). 
+
+(Page 33). 
+
+(Page 33). 
+
+(Page 32). 
+
+(Page 32). 
+
+(Page 32). 
+
+(Page 32). 
+
+(Page 32). 
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
+
+(Page 31). 
 
 (Page 30). 
 
