@@ -257,3 +257,18 @@ To find your own IP address you can use `ifconfig` on Linux.
 
 `host www.google.com` is used for DNS lookup to check IP addresses.
 `traceroute www.google.com` lists the route from you to a remote host.
+
+## 2. Ethernet Basics
+
+Ethernet consisted of a long piece of cable (possibly spliced by repeaters). When a station transmitted, the data went everywhere along that cable. Such an arrangement is known as a broadcast bus;
+
+However, between each station CPU and the cable there was a peripheral device (that is, a card) known as a **network interface**, which would take care of the details of transmitting and receiving. The network interface would (and still does) decide when a received packet should be forwarded to the host, via a CPU interrupt.
+
+Whenever two stations transmitted at the same time, the signals would collide, and interfere with one another; both transmissions would fail as a result. Proper handling of collisions was an essential part of the access-mediation strategy for the shared medium. In order to minimize collision loss, each station implemented the following: 
+1. Before transmission, wait for the line to become quiet 
+2. While transmitting, continually monitor the line for signs that a collision has occurred; if a collision is detected, cease transmitting 
+3. If a collision occurs, use a backoff-and-retransmit strategy 
+
+These properties can be summarized with the CSMA/CD acronym: Carrier Sense, Multiple Access, Collision Detect.
+
+(Page 46). 
