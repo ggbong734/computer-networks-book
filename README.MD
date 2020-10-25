@@ -271,4 +271,3 @@ Whenever two stations transmitted at the same time, the signals would collide, a
 
 These properties can be summarized with the CSMA/CD acronym: Carrier Sense, Multiple Access, Collision Detect.
 
-(Page 46). 
