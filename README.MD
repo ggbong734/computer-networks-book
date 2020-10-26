@@ -271,3 +271,154 @@ Whenever two stations transmitted at the same time, the signals would collide, a
 
 These properties can be summarized with the CSMA/CD acronym: Carrier Sense, Multiple Access, Collision Detect.
 
+## 4. Wireless LANS
+
+Ethernet-like collision detection is no longer feasible over radio. With radio the remote signal might easily be as little as 1/1,000,000 of the
+transmitted signal (-60 dB), compared to 1/100 when transmitting over wire in Ethernet.
+
+In wireless communication, two nodes A and B that are not in range of one another – and thus cannot detect one another – may still have their signals interfere at a third node C. If A and B transmit simultaneously then there will be a collsion at C, but neither A nor B can possibly detect this.
+
+“band width” (two words) means the frequency range used by a signal, not the data transmission rate.
+
+Data rate achievable with a radio signal is proportional to the channel width. “channel width” or “width of the frequency band” for the frequency range, as “band width” is easily mistaken for “bandwidth”.
+
+Higher data rates require wider frequency bands.
+
+A signal may reach a receiver through a line-of-sight path and also several reflected paths, possibly of varying length. In addition to reflection, the signal may be subject to reflectionlike scattering and diffraction. All of this together is known as multipath interference. Multipath interference tends to lead to wide fluctuations in signal intensity with a period of about half a wavelength;
+
+The Wi-Fi standard has provisions for minimizing power usage by allowing a device to “doze” most of the time, waking periodically to check if any packets are ready to be sent to it. The low-power Bluetooth wireless standard is commonly used as a cable alternative for things like computer mice and telephone headsets. Bluetooth is also a low-power network; for many applications the working range is about 10 meters.
+
+Wi-Fi is designed to interoperate freely with Ethernet at the logical LAN layer. Wi-Fi LAN attached to an Ethernet LAN looks like an extension of the Ethernet LAN.
+
+Traditionally, Wi-Fi used the 2.4 GHz ISM (Industrial, Scientific and Medical) band used also by microwave ovens,  the new 802.11ac has returned to using 5 GHz exclusively. The 5 GHz band has reduced ability to penetrate walls, often resulting in a lower effective range (though in offices and multi-unit housing this can be an advantage). The 5 GHz band provides many more usable channels than the 2.4 GHz band, resulting in much less interference in “crowded” environments.
+
+There are almost 200 5 MHz channels in the 5 GHz band. The United States requires users of the this band to avoid interfering with weather and military applications in the same frequency range; One Wi-Fi sender, however, needs several of these official channels; the typical 2.4 GHz 802.11g transmitter uses an actual frequency range of up to 22 MHz, or up to five official channels.
+
+Wi-Fi transmitting stations simply cannot detect collisions in progress. If another station transmits at the same time, a Wi-Fi sender will see nothing amiss although its signal will not be received.
+
+Wi-Fi Collision Avoidance strategy: Any sender wanting to send a new data packet waits the IFS time after first sensing the medium to see if it is idle. if other traffic is sensed, the sender must do an exponential backoff even for its first transmission attempt; other stations, after all, are likely also waiting, and avoiding an initial collision is strongly preferred.
+
+On an Ethernet, if two stations are waiting for a third to finish before they transmit, they will both transmit as soon as the third is finished and so there will always be an initial collision. With Wi-Fi, because of the larger initial k<32 backoff range, such initial collisions are unlikely. If a Wi-Fi sender believes there has been a collision, it retries its transmission, after doubling the backoff range to 64, then 128, 256, 512, 1024 and again 1024 (exponential backoff strategy). If these seven attempts all fail, the packet is discarded and the sender starts over.
+
+## 5. Virtual Private Networks
+
+Your home computer creates an ordinary Internet connection (TCP or UDP) to a workplace VPN server. Each end of the connection is typically associated with a software-created virtual network interface; each of the two virtual interfaces is assigned an IP address. When a packet is to be sent along the virtual link, it is actually encapsulated and sent along the original Internet connection to the VPN server, wending its way through the commodity Internet; this process is called tunneling.
+
+Tunneled packets are often encrypted as well as encapsulated.
+
+Other applications of VPNs include trying to appear geographically to be at another location, and bypassing firewall rules blocking specific TCP or UDP ports.
+
+## 8.2 Sliding window algorithm
+
+Retransmit-on-timeout policy; that is, if a packet is transmitted and there is no acknowledgment received during the timeout interval then the packet is resent. reliability, we also want to keep as many packets in transit as the network can support. The strategy used to achieve this is known as sliding windows.
+
+
+The sender picks a window size, winsize. The basic idea of sliding windows is that the sender is allowed to send this many packets before waiting for an ACK (acknowledgement which is sent from the receiver back to the sender to let it know that packet has been received.
+
+The sender keeps a state variable last_ACKed, representing the last packet for which it has received an ACK from the other end;
+
+<p align="center"><img src="images/8.2_sliding_window.png"></p>
+
+Larger sender winsize causes Data[N] to arrive faster.
+
+## 16. UDP transport
+
+User Datagram Protocol. UDP headers consists of source port, destination port, and checksums. 
+
+The port numbers are what makes UDP into a real transport protocol: with them, an application can now connect to an individual server process (that is, the process “owning” the port number in question), rather than simply to a host.
+
+UDP is unreliable, in that there is no UDP-layer attempt at timeouts, acknowledgment and retransmission; applications written for UDP must implement these. As with TCP, a UDP [host,port] pair is known as a socket. 
+
+UDP is also unconnected, or stateless; if an application has opened a port on a host, any other host on the Internet may deliver packets to that xhost,porty socket without preliminary negotiation.
+
+UDP is also unconnected, or stateless; if an application has opened a port on a host, any other host on the Internet may deliver packets to that xhost,porty socket without preliminary negotiation.
+
+UDP is also popular for **real-time transport**; the issue here is head-of-line blocking. If a TCP packet is lost, then the receiving host queues any later data until the lost data is retransmitted successfully, which can take several RTTs; there is no option for the receiving application to request different behavior. UDP, on the other hand, gives the receiving application **the freedom simply to ignore lost packets**. This approach is **very successful for voice and video**, which are **loss-tolerant** in that small losses simply degrade the received signal slightly, but **delay-intolerant** in that packets arriving too late for playback might as well not have arrived at all. Similarly, in a computer game a lost position update is moot after any subsequent update. **Loss tolerance is the reason the Real-time Transport Protocol, or RTP, is built on top of UDP rather than TCP**.
+
+## 17. TCP Transport Basics
+
+The standard transport protocols riding above the IP layer are TCP and UDP. UDP provides simple datagram delivery to remote sockets, that is, to xhost,porty pairs. TCP provides a much richer functionality for sending data to (connected) sockets.
+
+TCP is stream-oriented, meaning that the application can write data in very small or very large amounts and the TCP layer will take care of appropriate packetization.
+
+TCP is connection-oriented, meaning that a connection must be established before the beginning of any data transfer. TCP is reliable, in that TCP uses sequence numbers to ensure the correct order of delivery and a timeout/retransmission mechanism to make sure no data is lost short of massive network failure. 
+
+Finally, TCP automatically uses the sliding windows algorithm to achieve throughput relatively close to the maximum available.
+
+These features mean that TCP is very well suited for the transfer of large files. The two endpoints open a connection, the file data is written by one end into the connection and read by the other end, and the features above ensure that the file will be received correctly.
+
+TCP also works quite well for interactive applications where each side is sending and receiving streams of small packets. Examples of this include ssh or telnet, where packets are exchanged on each keystroke, and database connections that may carry many queries per second. 
+
+TCP works reasonably well for request/reply protocols, where one side sends a single message, the other side responds, and the connection is closed. The drawback here, however, is the overhead of setting up a new connection for each request; a better application-protocol design might be to allow multiple request/reply pairs over a single TCP connection.
+
+With UDP, if a server opens a socket (the OS object, with corresponding socket address), then any client on the Internet can send to that socket, via its socket address. Any UDP application, therefore, must be prepared to check the source address of each packet that arrives. With TCP, all data arriving at a connected socket must come from the other endpoint of the connection. When a server S initially opens a socket s, that socket is “unconnected”; it is said to be in the LISTEN state. While it still has a socket address consisting of its host and port, a LISTENing socket will never receive data directly. If a client C somewhere on the Internet wishes to send data to s, it must first establish a connection,
+
+### 17.3 Establishing a TCP Connection
+
+TCP connections are established via an exchange known as the three-way handshake. If A is the client and B is the LISTENing server, then the handshake proceeds as follows: 
+• A sends B a packet with the SYN bit set (a SYN packet) 
+• B responds with a SYN packet of its own; the ACK bit is now also set 
+• A responds to B’s SYN with its own ACK
+
+<p align="center"><img src="images/17.3_tcp_open_connection.png"></p>
+
+To close the connection, a superficially similar exchange involving FIN packets may occur: 
+• A sends B a packet with the FIN bit set (a FIN packet), announcing that it has finished sending data 
+• B sends A an ACK of the FIN 
+• B may continue to send additional data to A 
+• When B is also ready to cease sending, it sends its own FIN to A 
+• A sends B an ACK of the FIN; this is the final packet in the exchange Here’s the ladder diagram for this:
+
+<p align="center"><img src="images/17.3_tcp_close_connection.png"></p>
+
+## 19. TCP congestion management
+
+The central TCP mechanism here is for a connection to adjust its window size. A smaller winsize means fewer packets are out in the Internet at any one time, and less traffic means less congestion. A larger winsize means better throughput, up to a point. All TCPs reduce winsize when congestion is apparent, and increase it when it is not. The trick is in figuring out when and by how much to make these winsize changes. Many of the improvements to TCP have come from mining more and more information from the stream of returning ACKs.
+
+TCP’s congestion management is window-based; that is, TCP adjusts its window size to adapt to congestion. The window size can be thought of as the number of packets out there in the network; more precisely, it represents the number of packets and ACKs either in transit or enqueued. An alternative approach often used for real-time systems is rate-based congestion management, which runs into an unfortunate difficulty if the sending rate momentarily happens to exceed the available rate.
+
+(Page 424). 
+
+(Page 423). 
+
+(Page 381). 
+
+(Page 380). 
+
+(Page 377). 
+
+(Page 377). 
+
+(Page 377). 
+
+(Page 377). 
+
+(Page 377). 
+
+(Page 377). 
+
+(Page 377). 
+(Page 348). 
+
+(Page 347). 
+
+(Page 347). 
+
+(Page 347). 
+
+(Page 347). 
+
+(Page 178). 
+
+(Page 176). 
+
+(Page 176). 
+(Page 130). 
+
+(Page 129). 
+
+(Page 129). 
+
+(Page 129). 
+
+(Page 129). 
